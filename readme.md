@@ -1,28 +1,25 @@
-# Next.js + MDX
+# @oviirup/next-mdx
 
 Use [MDX](https://github.com/mdx-js/mdx) with [Next.js](https://github.com/vercel/next.js)
+
+> [!NOTE]
+> This is a slightly modified version of the original [@next/mdx](https://www.npmjs.com/package/@next/mdx) package
 
 ## Installation
 
 For usage with the `app` directory see the section below.
 
 ```
-npm install @next/mdx @mdx-js/loader @mdx-js/react
-```
-
-or
-
-```
-yarn add @next/mdx @mdx-js/loader @mdx-js/react
+npm install @oviirup/next-mdx
 ```
 
 ## Usage
 
-Create a `next.config.js` in your project
+Update your a `next.config.js` in your project
 
 ```js
 // next.config.js
-const withMDX = require('@next/mdx')();
+const withMDX = require('@oviirup/next-mdx')();
 module.exports = withMDX();
 ```
 
@@ -30,7 +27,7 @@ Optionally you can provide [MDX plugins](https://mdxjs.com/advanced/plugins#plug
 
 ```js
 // next.config.js
-const withMDX = require('@next/mdx')({
+const withMDX = require('@oviirup/next-mdx')({
   options: {
     remarkPlugins: [],
     rehypePlugins: [],
@@ -43,8 +40,9 @@ Optionally you can add your custom Next.js configuration as parameter
 
 ```js
 // next.config.js
-const withMDX = require('@next/mdx')();
+const withMDX = require('@oviirup/next-mdx')();
 module.exports = withMDX({
+  // your custom next config ...
   webpack(config, options) {
     return config;
   },
@@ -56,7 +54,7 @@ However, it can also be optionally configured to handle markdown files with the 
 
 ```js
 // next.config.js
-const withMDX = require('@next/mdx')({
+const withMDX = require('@oviirup/next-mdx')({
   extension: /\.(md|mdx)$/,
 });
 module.exports = withMDX();
@@ -66,11 +64,11 @@ In addition, MDX can be customized with compiler options, see the [mdx documenta
 
 ## Top level .mdx pages
 
-Define the `pageExtensions` option to have Next.js handle `.md` and `.mdx` files in the `pages` directory as pages:
+Define the `pageExtensions` option to have Next.js handle `.md` and `.mdx` files in the `pages` or `app` directory as pages:
 
 ```js
 // next.config.js
-const withMDX = require('@next/mdx')({
+const withMDX = require('@oviirup/next-mdx')({
   extension: /\.mdx?$/,
 });
 module.exports = withMDX({
@@ -78,29 +76,9 @@ module.exports = withMDX({
 });
 ```
 
-## TypeScript
+## Custom Components
 
-Follow [this guide](https://mdxjs.com/advanced/typescript) from the MDX docs.
-
----
-
-# App directory
-
-## Installation
-
-For usage with the `app` directory see below.
-
-```
-npm install @next/mdx
-```
-
-or
-
-```
-yarn add @next/mdx
-```
-
-## Usage
+The `mdx-components` file is required specially in case if you are using app directory. By default the plugin looks for the file at `mdx-components.js` or `src/mdx-components.js`, or its typescript equivalent, but you can specify your own path.
 
 Create an `mdx-components.js` file at the root of your project with the following contents:
 
@@ -121,6 +99,8 @@ Create a `next.config.js` in your project
 ```js
 // next.config.js
 const withMDX = require('@next/mdx')({
+  // Provide path to custom mdx-components path (optional)
+  components: 'src/components/mdx',
   // Optionally provide remark and rehype plugins
   options: {
     // If you use remark-gfm, you'll need to use next.config.mjs
